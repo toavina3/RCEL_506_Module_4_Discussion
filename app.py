@@ -11,8 +11,10 @@ st.write("Interactive replication of the NYT/NASA Northern Hemisphere summer tem
 # Sidebar controls for interactivity
 st.sidebar.header("Plot Parameters")
 noise_level = st.sidebar.slider("Noise Intensity", min_value=0.000, max_value=0.040, value=0.015, step=0.002)
-shift_offset = st.sidebar.slider("Temperature Shift Offset (2013–2023)", min_value=0.5, max_value=5.0, value=1.25, step=0.05)
 opacity = st.sidebar.slider("Distribution Opacity", min_value=0.3, max_value=1.0, value=0.85, step=0.05)
+
+# Fixed offset replacing the slider
+shift_offset = 1.25
 
 # Initialize figure layout
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8), facecolor='white')
@@ -35,7 +37,7 @@ y_pts2 = [0.00, 0.002, 0.008, 0.025, 0.07, 0.15, 0.25, 0.30, 0.50, 0.50,
           0.70, 0.82, 0.84, 0.79, 0.68, 0.53, 0.53, 0.30, 0.12, 0.00]
 y2_smooth = pchip_interpolate(x_pts2, y_pts2, x)
 
-# Apply interactive empirical noise & shift
+# Apply interactive empirical noise & fixed shift
 noise1 = np.random.normal(0, noise_level * 0.8, size=len(x)) * np.exp(-0.2 * x**2)
 y1 = np.clip(y1_smooth + noise1, 0, None)
 
